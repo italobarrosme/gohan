@@ -1,0 +1,17 @@
+
+echo "🧪  Starting a test check" 
+
+npm run test:deploy --findRelatedTests --bail
+if [ $? -ne 0 ]; then
+  echo "🧪⚠️  The tests failed. Push is not possible."
+  exit 1
+fi
+echo "🧪  Tests passed. Pushing to the repository."
+
+echo "📦  Starting a build check"
+npm run build
+if [ $? -ne 0 ]; then
+  echo "📦⚠️  A construção falhou. Não é possível fazer push."
+  exit 1
+fi
+echo "📦  Build succeeded. Pushing to the repository."

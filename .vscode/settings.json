@@ -1,0 +1,10 @@
+{
+  "editor.fontSize": 15,
+  "terminal.integrated.fontSize": 16,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "testing.automaticallyOpenPeekView": "never"
+}
