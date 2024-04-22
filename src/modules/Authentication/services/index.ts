@@ -13,8 +13,6 @@ export const postRegister = async (body: RegisterSchema) => {
       // },
     })
 
-    console.log(data, 'data')
-
     return data
   } catch (error: any) {
     throw new Error(error.message)

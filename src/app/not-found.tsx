@@ -9,16 +9,16 @@ const NotFound = () => {
 
   return (
     <>
-      <section className="flex h-full w-full items-center p-16">
+      <section className="flex size-full items-center p-16 text-brand-light">
         <div className="container mx-auto my-8 flex flex-col items-center justify-center px-5">
           <div className="max-w-md text-center">
-            <h2 className="mb-8 text-9xl font-extrabold text-brand-primary">
+            <h2 className="mb-8 text-9xl font-extrabold ">
               <span className="sr-only">Error</span>404
             </h2>
             <p className="text-2xl font-semibold md:text-3xl">
               Sorry, we couldnt find this page.
             </p>
-            <p className="mb-8 mt-4 text-brand-primary">
+            <p className="mb-8 mt-4 ">
               But dont worry, you can find plenty of other things on our
               homepage.
             </p>

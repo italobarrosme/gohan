@@ -45,7 +45,7 @@ export const LoginForm = () => {
       }
     } catch (error) {
       toast({
-        title: 'Erro ao enviar os dados',
+        title: 'Error sending form data',
         description: `${error}`,
         status: 'error',
       })

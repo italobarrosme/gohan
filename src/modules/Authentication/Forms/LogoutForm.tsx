@@ -37,5 +37,9 @@ export const LogoutForm = () => {
     }
   }
 
-  return <Button onClick={logout}>Logout </Button>
+  return (
+    <Button variant="primary" onClick={logout} icon="bi:box-arrow-right">
+      Logout
+    </Button>
+  )
 }

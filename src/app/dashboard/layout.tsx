@@ -1,5 +1,7 @@
 import { ReactNode } from 'react'
 import { Metadata } from 'next'
+import { Navbar } from '@/modules/Navigation/components/Navbar'
+import { LogoutForm } from '@/modules/Authentication/Forms/LogoutForm'
 
 type Props = {
   children?: ReactNode
@@ -14,6 +16,15 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children }: Props) {
-  return <section>{children}</section>
+export default async function RootLayout({ children }: Props) {
+  return (
+    <>
+      <header>
+        <Navbar>
+          <LogoutForm />
+        </Navbar>
+      </header>
+      <section>{children}</section>
+    </>
+  )
 }

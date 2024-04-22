@@ -1,43 +1,55 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
+import { cn } from '@/utils'
+import { Button } from '@/shared/components/Button'
+import { usePathname } from 'next/navigation'
+import { menus } from '../../menus'
 import { ReactNode } from 'react'
 
-type Menu = {
+export type Menu = {
   name: string
   icon?: string
   href?: string
+  active?: boolean
+  submenus?: Menu[]
+  image?: string
   onClick?: () => void
 }
 
 type NavbarProps = {
-  logo: string
-  menus: Menu[]
-  isMenuOpen: boolean
   children?: ReactNode
 }
 
-export const Navbar = ({ logo, menus, isMenuOpen, children }: NavbarProps) => {
+export const Navbar = ({ children }: NavbarProps) => {
+  const currentPathName = usePathname()
+
   return (
-    <nav className="absolute top-0 flex h-20 w-full items-center justify-between bg-brand-dark px-4 shadow-sm">
-      <Link href="/">
-        <Image src={logo} alt="logo" width={64} height={64} priority={true} />
-      </Link>
-      {children}
-      {!!isMenuOpen && (
-        <ul className="absolute right-20  top-16 z-40 rounded-md border bg-brand-light p-2 shadow-xl">
-          {menus.map((menu, index) => (
+    <nav className="flex rounded-md bg-brand-light text-brand-soft shadow-sm">
+      <ul className="flex h-16 min-w-80 max-w-3xl items-center gap-8">
+        <li></li>
+        {menus(currentPathName) &&
+          menus(currentPathName).map((menu, index) => (
             <li
               key={index}
-              className="relative my-4 cursor-pointer p-0 px-2 text-xs font-semibold text-brand-secondary hover:bg-brand-primary hover:text-white"
-              onClick={menu.onClick}
+              className={cn(
+                'flex items-center hover:text-brand-accent',
+                menu.active ? 'text-brand-accent' : 'text-brand-soft'
+              )}
             >
-              {menu.name}
+              {menu.href ? (
+                <Link href={menu.href || '/'} passHref>
+                  {menu.name}
+                </Link>
+              ) : (
+                <Button onClick={menu.onClick}>{menu.name}</Button>
+              )}
             </li>
           ))}
-        </ul>
-      )}
+
+        {children}
+        <li></li>
+      </ul>
     </nav>
   )
 }

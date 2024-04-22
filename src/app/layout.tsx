@@ -29,7 +29,7 @@ export default function RootLayout({ children }: Props) {
     <html lang="en">
       <body
         className={cn(
-          'flex min-h-screen flex-col items-center bg-brand-light bg-effect-granula p-4 text-brand-dark font-candal',
+          'flex min-h-screen flex-col items-center bg-effect-granula p-4 text-brand-dark font-candal',
           candal.variable
         )}
       >

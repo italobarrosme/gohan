@@ -4,7 +4,7 @@
 
 html,
 body {
-  @apply bg-brand-light;
+  @apply bg-brand-dark;
   padding: 0;
   margin: 0;
   overflow-x: hidden;
