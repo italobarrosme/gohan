@@ -5,7 +5,7 @@ import { ButtonHTMLAttributes, ReactNode } from 'react'
 import { tv, VariantProps } from 'tailwind-variants'
 
 const buttonVariantStyle = tv({
-  base: 'flex items-center gap-3 whitespace-nowrap rounded bg-brand-primary px-4 py-2 font-bold text-white transition-colors delay-300 hover:bg-brand-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+  base: 'flex items-center gap-3 whitespace-nowrap rounded bg-brand-primary px-4 py-2 text-sm font-bold text-white transition-colors delay-300 hover:bg-brand-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
   variants: {
     variant: {
       primary:

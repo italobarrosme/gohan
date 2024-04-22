@@ -26,7 +26,7 @@ export const Navbar = ({ children }: NavbarProps) => {
 
   return (
     <nav className="flex rounded-md bg-brand-light text-brand-soft shadow-sm">
-      <ul className="flex h-16 min-w-80 max-w-3xl items-center gap-8">
+      <ul className="flex min-h-16 max-w-3xl flex-wrap items-center gap-4 p-4">
         <li></li>
         {menus(currentPathName) &&
           menus(currentPathName).map((menu, index) => (

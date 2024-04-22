@@ -19,12 +19,12 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: Props) {
   return (
     <>
-      <header>
+      <header className="mb-12">
         <Navbar>
           <LogoutForm />
         </Navbar>
       </header>
-      <section>{children}</section>
+      {children}
     </>
   )
 }
