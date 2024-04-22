@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { getCustomLog } from './utils/logs/logs'
+import { cookies } from 'next/headers'
 
 export default async function middleware(req: NextRequest) {
   const res = NextResponse.next()
+  const token = cookies().get('sb-uaznemmoeoigtvokilto-auth-token')
+
+  if (!token && req.nextUrl.pathname !== '/') {
+    req.nextUrl.pathname = '/'
+    return NextResponse.redirect(req.nextUrl)
+  }
 
   try {
     const supabase = createMiddlewareClient({ req, res })

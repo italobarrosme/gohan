@@ -22,6 +22,7 @@ export const metadata: Metadata = {
 const candal = Candal({
   weight: '400',
   variable: '--font-candal',
+  subsets: ['latin'],
 })
 export default function RootLayout({ children }: Props) {
   return (
