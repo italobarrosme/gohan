@@ -88,10 +88,7 @@ describe('Button', () => {
   it('should change variant', () => {
     renderComponent({
       children: 'test',
-      variant: {
-        color: 'danger',
-        size: 'lg',
-      },
+      variant: 'danger',
     })
 
     const button = screen.getByRole('button', {
@@ -99,6 +96,5 @@ describe('Button', () => {
     })
 
     expect(button).toHaveClass('bg-red-500')
-    expect(button).toHaveClass('text-lg')
   })
 })
