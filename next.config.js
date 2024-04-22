@@ -27,6 +27,11 @@ const nextConfig = {
         hostname: 'images.unsplash.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: process.env.NEXT_PUBLIC_SUPABASE_HOST,
+        port: '',
+      },
     ],
   },
 }

@@ -16,15 +16,17 @@ import {
 } from '@/shared/components/Tabs'
 import { UploadImage, FileImage } from '../UploadImage/UploadImage'
 import { Icon } from '@iconify/react'
-import { ListImages } from '../ListImages/ListImages'
+import { ListImages, type Image } from '../ListImages/ListImages'
 import { Button } from '@/shared/components/Button'
 import { useToast } from '@/shared/components/Toast'
-import { postUploadImage } from '../../services'
-import { useState } from 'react'
+import { getImagesProcessing, postUploadImage } from '../../services'
+import { useEffect, useState } from 'react'
 
 export const Restore = () => {
   const { toast } = useToast()
   const [files, setFiles] = useState<FileImage[]>([])
+  const [imagesProcessing, setImagesProcessing] = useState<Image[]>([])
+  // const [imagesRestored, setImagesRestored] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
   const handleUpload = async (files: FileImage[]) => {
@@ -62,6 +64,30 @@ export const Restore = () => {
     }
   }
 
+  const listImagesProcessing = async () => {
+    if (imagesProcessing.length > 0) {
+      return
+    }
+
+    const { images, error } = await getImagesProcessing()
+
+    if (error) {
+      toast({
+        title: 'Error loading images',
+        description: `${error.message}`,
+        status: 'error',
+      })
+    }
+
+    if (images) {
+      setImagesProcessing(images)
+    }
+  }
+
+  useEffect(() => {
+    listImagesProcessing()
+  }, [])
+
   return (
     <section className="flex flex-col gap-4 rounded-md bg-brand-light p-4">
       <div className="flex w-full flex-row-reverse">
@@ -97,12 +123,12 @@ export const Restore = () => {
           <TabsTrigger value="restored">Images restored</TabsTrigger>
         </TabsList>
         <TabsContent value="restore">
-          <div className="grid min-h-96 place-content-center">
-            <ListImages images={[]} />
+          <div className="min-h-96">
+            <ListImages images={imagesProcessing} />
           </div>
         </TabsContent>
         <TabsContent value="restored">
-          <div className="grid min-h-96 place-content-center">
+          <div className="min-h-96">
             <ListImages images={[]} />
           </div>
         </TabsContent>
