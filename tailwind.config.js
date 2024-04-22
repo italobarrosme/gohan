@@ -11,16 +11,17 @@ module.exports = {
       sans: ['Graphik', 'sans-serif'],
       serif: ['Merriweather', 'serif'],
       mono: ['Fira Code'],
+      candal: ['var(--font-candal)'],
     },
     extend: {
       colors: {
         brand: {
-          dark: '#030826',
+          dark: '#5549A6',
           light: '#fffef3',
-          primary: '#F27141',
-          secondary: '#F28B30',
-          soft: '#F28D77',
-          accent: '#F24C27',
+          primary: '#7553A6',
+          secondary: '#A47ED9',
+          soft: '#DAB6F2',
+          accent: '#C043FF',
         },
         feedback: {
           error: '#FF0000',

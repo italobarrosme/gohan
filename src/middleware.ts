@@ -8,13 +8,19 @@ export default async function middleware(req: NextRequest) {
   try {
     const supabase = createMiddlewareClient({ req, res })
 
-    await supabase.auth.getSession()
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
 
-    getCustomLog({
-      log: 'User is authenticated',
-      statusCode: 200,
-      type: 'info',
-    })
+    if (!session && req.nextUrl.pathname !== '/') {
+      req.nextUrl.pathname = '/'
+      return NextResponse.redirect(req.nextUrl)
+    }
+
+    if (session && req.nextUrl.pathname === '/') {
+      req.nextUrl.pathname = '/dashboard'
+      return NextResponse.redirect(req.nextUrl)
+    }
   } catch (error: any) {
     getCustomLog({
       log: `Error: ${error}`,
@@ -27,5 +33,5 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: '',
+  matcher: '/((?!api|static|.*\\..*|_next).*)',
 }

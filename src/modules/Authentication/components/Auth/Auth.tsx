@@ -1,11 +1,12 @@
 import { AuthGuard } from '../../action'
+import { AuthSwitch } from './AuthSwitch'
 
 export const Auth = async () => {
   await AuthGuard()
 
   return (
-    <div>
-      <h1>Sign In</h1>
-    </div>
+    <section className="flex h-screen items-center justify-center">
+      <AuthSwitch />
+    </section>
   )
 }

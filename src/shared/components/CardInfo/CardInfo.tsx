@@ -18,7 +18,9 @@ export const CardInfo = ({
   return (
     <div
       className={cn(
-        isShow ? 'flex flex-col bg-brand-light p-4 w-full' : 'hidden',
+        isShow
+          ? 'flex flex-col bg-brand-light p-4 w-full rounded-md'
+          : 'hidden',
         className
       )}
     >

@@ -3,6 +3,8 @@ import '@/styles/globals.css'
 import { ReactNode } from 'react'
 import { Metadata } from 'next'
 import { ToastProvider } from '@/providers/toast'
+import { Candal } from 'next/font/google'
+import { cn } from '@/utils'
 
 type Props = {
   children?: ReactNode
@@ -17,10 +19,19 @@ export const metadata: Metadata = {
   },
 }
 
+const candal = Candal({
+  weight: '400',
+  variable: '--font-candal',
+})
 export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen flex-col items-center bg-brand-light bg-effect-granula p-4">
+      <body
+        className={cn(
+          'flex min-h-screen flex-col items-center bg-brand-light bg-effect-granula p-4 text-brand-dark font-candal',
+          candal.variable
+        )}
+      >
         <ToastProvider>
           <main>{children}</main>
         </ToastProvider>

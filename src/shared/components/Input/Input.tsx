@@ -14,7 +14,7 @@ import { cn } from 'src/utils'
 
 const inputStyles = cva(
   [
-    'flex h-10 w-full rounded-md border border-brand-soft bg-transparent p-3 pb-4 text-sm ring-offset-brand-soft transition-colors delay-300 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-brand-dark/30 hover:bg-brand-secondary focus:border-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed',
+    'flex h-10 w-full rounded-md border border-brand-soft bg-transparent p-3 pb-4 text-sm ring-offset-brand-soft transition-colors delay-300 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-brand-dark/30 hover:bg-brand-soft/40 focus:border-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed',
   ],
   {
     variants: {
@@ -146,7 +146,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
         >
           {hasError && errorMessage && (
-            <Text variant="p" className="mt-1">
+            <Text variant="p" className="mt-1 text-xs">
               {errorMessage}
             </Text>
           )}
@@ -155,8 +155,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               variant="p"
               className={
                 modeDark
-                  ? 'absolute left-0 mt-1 text-brand-light'
-                  : 'absolute left-0 mt-1 text-brand-dark'
+                  ? 'absolute left-0 mt-1 text-xs text-brand-light'
+                  : 'absolute left-0 mt-1 text-xs text-brand-dark'
               }
             >
               {accessoryText}
@@ -167,8 +167,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               variant="p"
               className={
                 modeDark
-                  ? 'absolute right-0 mt-1 text-brand-light'
-                  : 'absolute right-0 mt-1 text-brand-dark'
+                  ? 'absolute right-0 mt-1 text-xs text-brand-light'
+                  : 'absolute right-0 mt-1 text-xs text-brand-dark'
               }
             >
               {caractersCount}/{maxLength}
