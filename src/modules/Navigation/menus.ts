@@ -6,16 +6,6 @@ const menusTemplate: Menu[] = [
     href: '/dashboard',
     active: true,
   },
-  {
-    name: 'Profile',
-    href: '/dashboard/profile',
-    active: false,
-  },
-  {
-    name: 'Settings',
-    href: '/dashboard/settings',
-    active: false,
-  },
 ]
 
 export const menus = (pathname: string) => {

@@ -44,7 +44,7 @@ export const UploadImage = ({ onUpload }: UploadImageProps) => {
       <div
         {...getRootProps({
           className:
-            'border-2 border-dashed border-gray-200 rounded-md w-full h-48 flex items-center justify-center gap-2 cursor-pointer transition-colors delay-300 hover:border-brand-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2',
+            'border-2 border-dashed border-gray-200 min-h-48 rounded-md w-full h-full p-4 flex items-center justify-center gap-2 cursor-pointer transition-colors delay-300 hover:border-brand-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2',
         })}
       >
         <input {...getInputProps()} />
@@ -57,8 +57,8 @@ export const UploadImage = ({ onUpload }: UploadImageProps) => {
                 <Image
                   src={file.preview}
                   alt={file.name}
-                  width={120}
-                  height={120}
+                  width={220}
+                  height={220}
                 />
                 <span className="text-xs">{file.name}</span>
               </div>

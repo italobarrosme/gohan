@@ -5,6 +5,7 @@ import { Metadata } from 'next'
 import { ToastProvider } from '@/providers/toast'
 import { Candal } from 'next/font/google'
 import { cn } from '@/utils'
+import { LoadingGlobal } from '@/modules/LoadingGlobal/components/LoadingGlobal'
 
 type Props = {
   children?: ReactNode
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: Props) {
         <ToastProvider>
           <main>{children}</main>
         </ToastProvider>
+        <LoadingGlobal />
       </body>
     </html>
   )

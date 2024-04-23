@@ -14,62 +14,33 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/shared/components/Tabs'
-import { UploadImage, FileImage } from '../UploadImage/UploadImage'
 import { Icon } from '@iconify/react'
-import { ListImages, type Image } from '../ListImages/ListImages'
-import { Button } from '@/shared/components/Button'
+import { ListImages } from '../ListImages/ListImages'
 import { useToast } from '@/shared/components/Toast'
-import { getImagesProcessing, postUploadImage } from '../../services'
+import {
+  getImagesRestore,
+  getListImagesRestored,
+  postEnchanceImageReplicate,
+} from '../../services'
 import { useEffect, useState } from 'react'
+import { ImageRestore } from '../../types'
+import { UploadImagesForm } from '../../Forms/UploadImagesForm/UploadImagesForm'
+import { useLoadingGlobal } from '@/modules/LoadingGlobal/store/useLoadingGlobal'
 
 export const Restore = () => {
   const { toast } = useToast()
-  const [files, setFiles] = useState<FileImage[]>([])
-  const [imagesProcessing, setImagesProcessing] = useState<Image[]>([])
-  // const [imagesRestored, setImagesRestored] = useState<string[]>([])
-  const [isLoading, setIsLoading] = useState(false)
 
-  const handleUpload = async (files: FileImage[]) => {
-    setFiles(files)
-  }
+  const [imagesRestore, setImagesRestore] = useState<ImageRestore[]>([])
+  const [imagesRestored, setImagesRestored] = useState<ImageRestore[]>([])
+  const [isOnUpload, setIsOnUpload] = useState(false)
+  const { setLoading } = useLoadingGlobal()
 
-  const submitUpload = async () => {
-    setIsLoading(true)
-    try {
-      const { data, error } = await postUploadImage(files[0])
-
-      if (error) {
-        toast({
-          title: 'Erro ao enviar os dados',
-          description: `${error.message}`,
-          status: 'error',
-        })
-      }
-
-      if (data) {
-        toast({
-          title: 'Image uploaded successfully!',
-          description: 'Image uploaded successfully!',
-          status: 'success',
-        })
-      }
-    } catch (error) {
-      toast({
-        title: 'Error sending form data',
-        description: `${error}`,
-        status: 'error',
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const listImagesProcessing = async () => {
-    if (imagesProcessing.length > 0) {
+  const listImagesRestore = async () => {
+    if (imagesRestore.length > 0) {
       return
     }
 
-    const { images, error } = await getImagesProcessing()
+    const { images, error } = await getImagesRestore()
 
     if (error) {
       toast({
@@ -80,18 +51,84 @@ export const Restore = () => {
     }
 
     if (images) {
-      setImagesProcessing(images)
+      const trataImages = images.map((image: any) => ({
+        id: Math.random().toString(36).substring(7),
+        url: `${image.url}`,
+        name: image.name,
+        function: () => restoreImage(image.name),
+      }))
+
+      setImagesRestore(trataImages)
+    }
+  }
+
+  const listImagesRestored = async () => {
+    if (imagesRestored.length > 0) {
+      return
+    }
+
+    const { images, error } = await getListImagesRestored()
+
+    if (error) {
+      toast({
+        title: 'Error loading images',
+        description: `${error.message}`,
+        status: 'error',
+      })
+    }
+
+    if (images) {
+      const trataImages = images.map((image: any) => ({
+        id: Math.random().toString(36).substring(7),
+        url: `${image.url}`,
+        name: image.name,
+      }))
+
+      setImagesRestored(trataImages)
+    }
+  }
+
+  const restoreImage = async (image: any) => {
+    setLoading(true)
+    try {
+      await postEnchanceImageReplicate(image)
+
+      toast({
+        title: 'Image restored',
+        description: 'Your image has been restored',
+        status: 'success',
+      })
+    } catch (error: any) {
+      toast({
+        title: 'Error restoring image',
+        description: `${error.message}`,
+        status: 'error',
+      })
+    } finally {
+      listImagesRestore()
+      listImagesRestored()
+      setLoading(false)
     }
   }
 
   useEffect(() => {
-    listImagesProcessing()
+    listImagesRestore()
+    listImagesRestored()
   }, [])
+
+  const handlerUpload = (isOnUpload: boolean) => {
+    setIsOnUpload(isOnUpload)
+
+    if (!isOnUpload) {
+      listImagesRestore()
+      listImagesRestored()
+    }
+  }
 
   return (
     <section className="flex flex-col gap-4 rounded-md bg-brand-light p-4">
-      <div className="flex w-full flex-row-reverse">
-        <Dialog>
+      <div className="flex flex-row-reverse">
+        <Dialog onOpenChange={handlerUpload} open={isOnUpload}>
           <DialogTrigger className="flex items-center  gap-3 whitespace-nowrap rounded bg-brand-primary px-4 py-2 text-sm font-bold text-white transition-colors delay-300 hover:bg-brand-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
             Upload image <Icon icon="uil:image-upload" width={24} />
           </DialogTrigger>
@@ -101,19 +138,8 @@ export const Restore = () => {
               <DialogDescription>
                 Upload your image to restore it
               </DialogDescription>
+              <UploadImagesForm handlerUpload={handlerUpload} />
             </DialogHeader>
-            <div className="flex flex-col gap-4">
-              <UploadImage onUpload={(files) => handleUpload(files)} />
-              <div className="flex w-full flex-row-reverse">
-                <Button
-                  type="submit"
-                  icon="uil:image-upload"
-                  onClick={submitUpload}
-                >
-                  {isLoading ? 'Uploading...' : 'Upload'}
-                </Button>
-              </div>
-            </div>
           </DialogContent>
         </Dialog>
       </div>
@@ -124,12 +150,12 @@ export const Restore = () => {
         </TabsList>
         <TabsContent value="restore">
           <div className="min-h-96">
-            <ListImages images={imagesProcessing} />
+            <ListImages images={imagesRestore} />
           </div>
         </TabsContent>
         <TabsContent value="restored">
           <div className="min-h-96">
-            <ListImages images={[]} />
+            <ListImages images={imagesRestored} />
           </div>
         </TabsContent>
       </Tabs>

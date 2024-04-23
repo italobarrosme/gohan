@@ -1,15 +1,10 @@
 import { Button } from '@/shared/components/Button'
 import { Icon } from '@iconify/react'
 import Image from 'next/image'
-
-export type Image = {
-  src: string
-  alt: string
-  restore: () => void
-}
+import { ImageRestore } from '../../types'
 
 export type ListImagesProps = {
-  images: Image[]
+  images: ImageRestore[]
 }
 
 export const ListImages = ({ images }: ListImagesProps) => {
@@ -25,22 +20,27 @@ export const ListImages = ({ images }: ListImagesProps) => {
     )
   }
 
-  console.log('IMAGES', images)
-
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex max-w-5xl flex-wrap gap-4 p-4">
       {images.map((image, index) => (
-        <div key={index} className="flex items-center gap-4">
-          <Image
-            src={image.src}
-            alt={image.alt}
-            className="size-24 rounded-md"
-            width={120}
-            height={120}
-          />
-          <Button onClick={image.restore} variant="link">
-            Restore
-          </Button>
+        <div key={index} className="flex flex-col items-center gap-4">
+          <div className="relative size-80">
+            <Image
+              src={image.url}
+              alt={image.name}
+              className="rounded-md object-fill"
+              fill
+            />
+          </div>
+          {image.function && (
+            <Button
+              onClick={image.function}
+              variant="secondary"
+              icon="heroicons:sparkles-20-solid"
+            >
+              Restore
+            </Button>
+          )}
         </div>
       ))}
     </div>
