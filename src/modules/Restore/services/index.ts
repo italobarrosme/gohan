@@ -159,11 +159,25 @@ export const getListImagesRestored = async () => {
   }
 }
 
+export type ImageCompare =
+  | {
+      url_before: string
+      name_before: string
+    }[]
+  | undefined
+
+export type ImageRestored =
+  | {
+      url_after: string
+      name_after: string
+    }[]
+  | undefined
+
 export const getListImagesRestoreCompare = async () => {
   const supabase = createClientComponentClient()
 
-  let imagesRestored = null
-  let imagesCompare = null
+  let imagesRestored: ImageRestored = undefined
+  let imagesCompare: ImageCompare = undefined
 
   try {
     const { data: restored, error } = await supabase.storage
@@ -213,11 +227,14 @@ export const getListImagesRestoreCompare = async () => {
     throw new Error(error.message)
   }
 
-  if (!imagesCompare) {
-    throw new Error('Error listing images')
-  }
-
   const resultImages = imagesRestored.map((image: any, index) => {
+    if (!imagesCompare) {
+      return {
+        url_after: image.url_after,
+        name_after: image.name_after,
+      }
+    }
+
     return {
       url_after: image.url_after,
       name_after: image.name_after,
