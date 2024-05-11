@@ -213,6 +213,10 @@ export const getListImagesRestoreCompare = async () => {
     throw new Error(error.message)
   }
 
+  if (!imagesCompare) {
+    throw new Error('Error listing images')
+  }
+
   const resultImages = imagesRestored.map((image: any, index) => {
     return {
       url_after: image.url_after,
