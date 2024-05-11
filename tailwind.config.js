@@ -14,6 +14,11 @@ module.exports = {
       candal: ['var(--font-candal)'],
     },
     extend: {
+      size: {
+        128: '32rem',
+        144: '36rem',
+        160: '40rem',
+      },
       colors: {
         brand: {
           dark: '#5549A6',

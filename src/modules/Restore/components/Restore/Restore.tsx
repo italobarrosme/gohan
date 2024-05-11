@@ -19,19 +19,22 @@ import { ListImages } from '../ListImages/ListImages'
 import { useToast } from '@/shared/components/Toast'
 import {
   getImagesRestore,
-  getListImagesRestored,
+  getListImagesRestoreCompare,
   postEnchanceImageReplicate,
 } from '../../services'
 import { useEffect, useState } from 'react'
-import { ImageRestore } from '../../types'
+import { ImageRestore, ImageRestoreCompare } from '../../types'
 import { UploadImagesForm } from '../../Forms/UploadImagesForm/UploadImagesForm'
 import { useLoadingGlobal } from '@/modules/LoadingGlobal/store/useLoadingGlobal'
+import { ListImagesRestoreCompare } from '../ListImagesCompare/ListImagesCompare'
 
 export const Restore = () => {
   const { toast } = useToast()
 
   const [imagesRestore, setImagesRestore] = useState<ImageRestore[]>([])
-  const [imagesRestored, setImagesRestored] = useState<ImageRestore[]>([])
+  const [imagesRestoreCompare, setImagesRestoreCompare] = useState<
+    ImageRestoreCompare[]
+  >([])
   const [isOnUpload, setIsOnUpload] = useState(false)
   const { setLoading } = useLoadingGlobal()
 
@@ -62,12 +65,12 @@ export const Restore = () => {
     }
   }
 
-  const listImagesRestored = async () => {
-    if (imagesRestored.length > 0) {
+  const listImagesRestoreCompare = async () => {
+    if (imagesRestoreCompare.length > 0) {
       return
     }
 
-    const { images, error } = await getListImagesRestored()
+    const { images, error } = await getListImagesRestoreCompare()
 
     if (error) {
       toast({
@@ -80,11 +83,13 @@ export const Restore = () => {
     if (images) {
       const trataImages = images.map((image: any) => ({
         id: Math.random().toString(36).substring(7),
-        url: `${image.url}`,
-        name: image.name,
+        url_before: `${image.url_before}`,
+        name_before: image.name_before,
+        url_after: `${image.url_after}`,
+        name_after: image.name_after,
       }))
 
-      setImagesRestored(trataImages)
+      setImagesRestoreCompare(trataImages)
     }
   }
 
@@ -106,14 +111,14 @@ export const Restore = () => {
       })
     } finally {
       listImagesRestore()
-      listImagesRestored()
+      listImagesRestoreCompare()
       setLoading(false)
     }
   }
 
   useEffect(() => {
     listImagesRestore()
-    listImagesRestored()
+    listImagesRestoreCompare()
   }, [])
 
   const handlerUpload = (isOnUpload: boolean) => {
@@ -121,7 +126,7 @@ export const Restore = () => {
 
     if (!isOnUpload) {
       listImagesRestore()
-      listImagesRestored()
+      listImagesRestoreCompare()
     }
   }
 
@@ -155,7 +160,9 @@ export const Restore = () => {
         </TabsContent>
         <TabsContent value="restored">
           <div className="min-h-96">
-            <ListImages images={imagesRestored} />
+            <ListImagesRestoreCompare
+              imagesRestoreCompared={imagesRestoreCompare}
+            />
           </div>
         </TabsContent>
       </Tabs>
