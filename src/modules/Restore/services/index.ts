@@ -1,6 +1,6 @@
 import { getCustomLog } from '@/utils/logs/logs'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { startEnchanceImageAction } from './actions'
+import { startColorImageAction, startEnchanceImageAction } from './actions'
 
 const BUCKET_IMAGE_FOLDER =
   process.env.NEXT_PUBLIC_SUPABASE_APP_BUCKET_IMAGE_FOLDER
@@ -73,7 +73,59 @@ export const getImagesRestore = async () => {
   }
 }
 
-export const postEnchanceImageReplicate = async (name: any) => {
+export const postColoredImageReplicate = async (name: string) => {
+  const supabase = createClientComponentClient()
+
+  try {
+    const { data } = await supabase.storage
+      .from(BUCKET_IMAGE_FOLDER)
+      .getPublicUrl(`${BUCKET_IMAGE_RESTORE}/${name}`)
+
+    if (!data) {
+      throw new Error('Image not found')
+    }
+
+    const { restoredImage } = await startColorImageAction(data.publicUrl)
+
+    if (!restoredImage) {
+      throw new Error('Error processing image')
+    }
+
+    const readImageRestored = await fetch(restoredImage)
+    const blobImage = await readImageRestored.blob()
+
+    const { error } = await supabase.storage
+      .from(BUCKET_IMAGE_FOLDER)
+      .upload(`${BUCKET_IMAGE_RESTORED}/${name}`, blobImage)
+
+    if (error) {
+      throw new Error('Error uploading image')
+    }
+
+    const { error: errorDelete } = await supabase.storage
+      .from(BUCKET_IMAGE_FOLDER)
+      .move(
+        `${BUCKET_IMAGE_RESTORE}/${name}`,
+        `${BUCKET_IMAGE_RESTORED_COMPARE}/${name}`
+      )
+
+    if (errorDelete) {
+      throw new Error('Error deleting image')
+    }
+
+    getCustomLog({
+      log: `Image colored restored image`,
+      statusCode: 200,
+      type: 'success',
+    })
+
+    return { error: null }
+  } catch (error: any) {
+    throw new Error(error.message)
+  }
+}
+
+export const postEnchanceImageReplicate = async (name: string) => {
   const supabase = createClientComponentClient()
 
   try {

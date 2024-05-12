@@ -3,6 +3,7 @@ export type ImageRestore = {
   url: string
   name: string
   function?: () => void
+  function2?: () => void
 }
 
 export type ImageRestoreCompare = {
@@ -12,4 +13,5 @@ export type ImageRestoreCompare = {
   name_after: string
   name_before: string
   function?: () => void
+  function2?: () => void
 }

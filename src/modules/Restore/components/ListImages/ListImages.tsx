@@ -41,6 +41,15 @@ export const ListImages = ({ images }: ListImagesProps) => {
               Restore
             </Button>
           )}
+          {image.function2 && (
+            <Button
+              onClick={image.function2}
+              variant="secondary"
+              icon="heroicons:paint-brush-20-solid"
+            >
+              Colored
+            </Button>
+          )}
         </div>
       ))}
     </div>

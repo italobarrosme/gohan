@@ -20,6 +20,7 @@ import { useToast } from '@/shared/components/Toast'
 import {
   getImagesRestore,
   getListImagesRestoreCompare,
+  postColoredImageReplicate,
   postEnchanceImageReplicate,
 } from '../../services'
 import { useEffect, useState } from 'react'
@@ -59,6 +60,7 @@ export const Restore = () => {
         url: `${image.url}`,
         name: image.name,
         function: () => restoreImage(image.name),
+        function2: () => coloredImage(image.name),
       }))
 
       setImagesRestore(trataImages)
@@ -106,6 +108,29 @@ export const Restore = () => {
     } catch (error: any) {
       toast({
         title: 'Error restoring image',
+        description: `${error.message}`,
+        status: 'error',
+      })
+    } finally {
+      listImagesRestore()
+      listImagesRestoreCompare()
+      setLoading(false)
+    }
+  }
+
+  const coloredImage = async (image: any) => {
+    setLoading(true)
+    try {
+      await postColoredImageReplicate(image)
+
+      toast({
+        title: 'Image colored',
+        description: 'Your image has been colored',
+        status: 'success',
+      })
+    } catch (error: any) {
+      toast({
+        title: 'Error coloring image',
         description: `${error.message}`,
         status: 'error',
       })
